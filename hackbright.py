@@ -44,7 +44,7 @@ def make_new_student(first_name, last_name, github):
     """
     QUERY = """
         INSERT INTO students(first_name, last_name, github)
-            VALUES(:first_name, :last_name, :github)
+            VALUES (:first_name, :last_name, :github)
         """
     db_cursor = db.session.execute(QUERY, {'first_name': first_name, 
                                            'last_name': last_name, 
@@ -53,6 +53,7 @@ def make_new_student(first_name, last_name, github):
     db.session.commit()
 
     print(f'Successfully added student: {first_name} {last_name}')
+
 
 
 def get_project_by_title(title):
@@ -86,6 +87,28 @@ def get_grade_by_github_title(student_github, title):
     grade_p = db_cursor.fetchone()
     
     print(f"This is {grade_p[2]} for project {grade_p[1]} grade is {grade_p[0]}")
+
+
+
+def get_projects(student_github):
+    """Print grade student received for a project."""
+    QUERY = """
+    SELECT grade, project_title, student_github
+    FROM grades
+    WHERE (student_github = :student_githubx)
+    """
+    # getting more than one row with fetchall 
+    # now you have a list of tuples of jhack's info :
+        # [(10, 'Markov', 'jhacks'), (2, 'Blockly', 'jhacks')]
+    # can index in an index to get variable data or can loop and index
+
+
+    db_cursor = db.session.execute(QUERY, {'student_githubx': student_github})
+    grade_p = db_cursor.fetchall()
+
+    print(grade_p)
+    
+    print(f"This is {grade_p[0][2]} for project {grade_p[0][1]} grade is {grade_p[0][0]}")
     
 
 
