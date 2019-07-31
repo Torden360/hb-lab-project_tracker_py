@@ -69,20 +69,24 @@ def get_project_by_title(title):
     print(f"Hey, the {project[0]} project is {project[1]}")
 
 
-def get_grade_by_github_title(github, title):
+def get_grade_by_github_title(student_github, title):
     """Print grade student received for a project."""
-    # QUERY = """
-    # SELECT grade, project_title, student_github
-    # FROM grades
-    # WHERE (title = :project_title) AND (student_github = :github)
-    # """
+    QUERY = """
+    SELECT grade, project_title, student_github
+    FROM grades
+    WHERE (project_title = :titlex) AND (student_github = :student_githubx)
+    """
+    # :titlex is just a placeholder WITHIN the SQL query string, we pass in the
+    # argument from the FN parameter 'title' using the session.execute
+    # so, the placeholder from QUERY becomes the key 
+    # db.session.execute(QUERY, {'placeholder/key':function parameter})
 
-    # db_cursor = db.session.execute(QUERY, {'project_title': title, 
-    #                                        'student_github': github})
-    # grade = db_cursor.fetchone()
+    db_cursor = db.session.execute(QUERY, {'titlex': title, 
+                                           'student_githubx': student_github})
+    grade_p = db_cursor.fetchone()
     
-    # print(f"This is {grade[2]} for project {grade[1]} grade is {grade[0]}")
-    pass
+    print(f"This is {grade_p[2]} for project {grade_p[1]} grade is {grade_p[0]}")
+    
 
 
 def assign_grade(github, title, grade):
